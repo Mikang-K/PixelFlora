@@ -61,7 +61,8 @@ if [ ! -f "$APP_DIR/backend/package.json" ]; then
   # ── Nginx: serves the React build + proxies /api and /socket.io to backend ──
   cat > /etc/nginx/conf.d/pixelflora.conf << 'NGINXEOF'
 server {
-    listen 80;
+    # default_server ensures this block takes priority over nginx.conf's built-in server block
+    listen 80 default_server;
     server_name _;
 
     # Serve the pre-built React app

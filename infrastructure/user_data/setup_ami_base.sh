@@ -76,7 +76,8 @@ echo "[6/6] Configuring Nginx and systemd..."
 # Nginx: serve React build + proxy API/WebSocket to backend
 cat > /etc/nginx/conf.d/pixelflora.conf << 'NGINXEOF'
 server {
-    listen 80;
+    # default_server ensures this block takes priority over nginx.conf's built-in server block
+    listen 80 default_server;
     server_name _;
 
     root /home/ec2-user/app/frontend/dist;
