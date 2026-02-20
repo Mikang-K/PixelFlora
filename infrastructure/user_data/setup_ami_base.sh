@@ -174,6 +174,10 @@ systemctl daemon-reload
 systemctl enable pixelflora
 systemctl enable nginx
 
+# Allow nginx (runs as 'nginx' user) to traverse the ec2-user home directory
+# Without this, nginx returns 500 when serving /home/ec2-user/app/frontend/dist
+chmod o+x /home/ec2-user
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 7. Clean cloud-init cache (CRITICAL for AMI-based deployment)
 # Without this, new instances launched from this AMI will see the cloud-init

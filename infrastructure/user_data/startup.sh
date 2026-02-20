@@ -165,6 +165,10 @@ SVCEOF
   systemctl enable pixelflora
   systemctl enable nginx
 
+  # Allow nginx (runs as 'nginx' user) to traverse the ec2-user home directory
+  # Without this, nginx returns 500 when serving /home/ec2-user/app/frontend/dist
+  chmod o+x /home/ec2-user
+
   log "Full bootstrap complete."
 else
   log "Pre-installed app found (AMI-based). Skipping install phase."
