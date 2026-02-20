@@ -1,0 +1,65 @@
+# PixelFlora — Terraform Variables for AWS Academy
+#
+# SETUP:
+#   1. Copy this file:  cp terraform.tfvars.example terraform.tfvars
+#   2. Fill in ami_id and key_name (see instructions below)
+#   3. Set AWS credentials (see bottom of this file)
+#   4. Run: terraform init && terraform apply
+
+# ── Region ────────────────────────────────────────────────────────────────────
+# AWS Academy Learner Labs use us-east-1 (N. Virginia)
+aws_region = "us-east-1"
+
+# ── Project ───────────────────────────────────────────────────────────────────
+project_name = "pixelflora"
+
+# ── AMI ───────────────────────────────────────────────────────────────────────
+# Option A (Recommended — faster startup ~1 min):
+#   1. Launch a base Amazon Linux 2023 EC2 in us-east-1
+#   2. SSH in and run: sudo bash infrastructure/user_data/setup_ami_base.sh
+#   3. Create AMI from that instance in the AWS Console
+#   4. Paste the AMI ID here
+#
+# Option B (Simpler — slower startup ~10 min):
+#   Use the latest Amazon Linux 2023 AMI for us-east-1.
+#   Find it: AWS Console → EC2 → Launch Instance → Quick Start → Amazon Linux 2023
+#
+ami_id = "ami-xxxxxxxxxxxxxxxxx"   # REPLACE with your AMI ID
+
+# ── EC2 Key Pair ──────────────────────────────────────────────────────────────
+# Create first: AWS Console → EC2 → Key Pairs → Create key pair
+# Paste the name here (NOT the filename, just the key pair name)
+key_name = "your-key-pair-name"   # REPLACE with your Key Pair name
+
+# ── Instance Type ─────────────────────────────────────────────────────────────
+instance_type = "t3.micro"
+
+# ── Auto Scaling ──────────────────────────────────────────────────────────────
+min_size         = 1
+max_size         = 4
+desired_capacity = 2   # Start with 2 to demonstrate load balancing immediately
+
+# ── CPU Scaling Threshold ─────────────────────────────────────────────────────
+# Scale out when average CPU exceeds this %. Lower = easier to trigger with Storm Mode.
+cpu_target = 60
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AWS CREDENTIALS (AWS Academy)
+# ─────────────────────────────────────────────────────────────────────────────
+# Do NOT put credentials in this file. Use one of:
+#
+# Option 1 — AWS CLI credentials file:
+#   AWS Academy Console → AWS Details → AWS CLI → Copy
+#   Paste into ~/.aws/credentials:
+#     [default]
+#     aws_access_key_id     = ASIA...
+#     aws_secret_access_key = ...
+#     aws_session_token     = ...
+#
+# Option 2 — Environment variables:
+#   export AWS_ACCESS_KEY_ID=...
+#   export AWS_SECRET_ACCESS_KEY=...
+#   export AWS_SESSION_TOKEN=...
+#
+# NOTE: Academy credentials expire every ~4 hours.
+#       Re-paste from the Academy portal if you get AuthFailure errors.

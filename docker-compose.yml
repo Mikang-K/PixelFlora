@@ -1,0 +1,57 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend-a:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - INSTANCE_COLOR=A
+      - PORT=3001
+      - NODE_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  backend-b:
+    build: ./backend
+    ports:
+      - "3002:3001"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - INSTANCE_COLOR=B
+      - PORT=3001
+      - NODE_ENV=development
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3001
+    volumes:
+      - ./frontend/src:/app/src
+
+volumes:
+  redis_data:
