@@ -1,3 +1,15 @@
+# --- AMI Resolution ---
+# If ami_id is provided in tfvars, use it (faster startup, ~1 min).
+# If empty, auto-fetch the latest Amazon Linux 2023 AMI (slower startup, ~10 min).
+
+data "aws_ssm_parameter" "al2023" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+}
+
+locals {
+  resolved_ami_id = var.ami_id != "" ? var.ami_id : data.aws_ssm_parameter.al2023.value
+}
+
 # --- Security Groups ---
 
 resource "aws_security_group" "alb" {
@@ -105,7 +117,7 @@ resource "aws_lb_listener" "http" {
 
 resource "aws_launch_template" "main" {
   name_prefix   = "${var.project_name}-"
-  image_id      = var.ami_id
+  image_id      = local.resolved_ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
 

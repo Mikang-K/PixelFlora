@@ -16,8 +16,9 @@ variable "project_name" {
 }
 
 variable "ami_id" {
-  description = "AMI ID created from the base EC2 instance with the app pre-installed"
+  description = "Custom AMI ID for faster startup (~1 min). Leave empty to auto-use the latest Amazon Linux 2023 AMI (~10 min startup via startup.sh)."
   type        = string
+  default     = ""
 }
 
 variable "instance_type" {

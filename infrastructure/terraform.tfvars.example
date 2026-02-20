@@ -14,17 +14,17 @@ aws_region = "us-east-1"
 project_name = "pixelflora"
 
 # ── AMI ───────────────────────────────────────────────────────────────────────
-# Option A (Recommended — faster startup ~1 min):
+# Option A — Auto (default, no setup needed):
+#   Leave ami_id empty. Terraform automatically fetches the latest Amazon Linux 2023 AMI.
+#   New instances run startup.sh on first boot (~10 min to become healthy).
+#
+# Option B — Custom AMI (faster startup ~1 min):
 #   1. Launch a base Amazon Linux 2023 EC2 in us-east-1
 #   2. SSH in and run: sudo bash infrastructure/user_data/setup_ami_base.sh
 #   3. Create AMI from that instance in the AWS Console
-#   4. Paste the AMI ID here
+#   4. Paste the AMI ID below
 #
-# Option B (Simpler — slower startup ~10 min):
-#   Use the latest Amazon Linux 2023 AMI for us-east-1.
-#   Find it: AWS Console → EC2 → Launch Instance → Quick Start → Amazon Linux 2023
-#
-ami_id = "ami-xxxxxxxxxxxxxxxxx"   # REPLACE with your AMI ID
+ami_id = ""   # Leave empty for auto, or paste ami-xxxxxxxxx for custom AMI
 
 # ── EC2 Key Pair ──────────────────────────────────────────────────────────────
 # Create first: AWS Console → EC2 → Key Pairs → Create key pair
