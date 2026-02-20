@@ -58,11 +58,43 @@ if [ ! -f "$APP_DIR/backend/package.json" ]; then
   sudo -u ec2-user npm install --production
   log "Backend dependencies installed."
 
+  # Remove the default server block from nginx.conf so it doesn't conflict
+  # with pixelflora.conf (both claim server_name _ on port 80)
+  cat > /etc/nginx/nginx.conf << 'NGINXMAINEOF'
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log notice;
+pid /run/nginx.pid;
+
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    keepalive_timeout   65;
+    types_hash_max_size 4096;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+NGINXMAINEOF
+
   # ── Nginx: serves the React build + proxies /api and /socket.io to backend ──
   cat > /etc/nginx/conf.d/pixelflora.conf << 'NGINXEOF'
 server {
-    # default_server ensures this block takes priority over nginx.conf's built-in server block
-    listen 80 default_server;
+    listen 80;
     server_name _;
 
     # Serve the pre-built React app
