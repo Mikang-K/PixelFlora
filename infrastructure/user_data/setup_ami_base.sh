@@ -141,6 +141,15 @@ systemctl daemon-reload
 systemctl enable pixelflora
 systemctl enable nginx
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. Clean cloud-init cache (CRITICAL for AMI-based deployment)
+# Without this, new instances launched from this AMI will see the cloud-init
+# "already ran" flag and SKIP user_data (startup.sh), leaving services stopped.
+# ─────────────────────────────────────────────────────────────────────────────
+echo "[7/7] Clearing cloud-init cache..."
+cloud-init clean --logs
+echo "cloud-init cache cleared. New instances will run startup.sh on first boot."
+
 echo ""
 echo "=========================================="
 echo " AMI base setup COMPLETE"
