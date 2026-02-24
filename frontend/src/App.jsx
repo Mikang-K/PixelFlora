@@ -5,17 +5,6 @@ import StormButton from './components/StormButton';
 import InstanceLegend from './components/InstanceLegend';
 import { useSocket } from './hooks/useSocket';
 
-const SERVERS = [
-  { label: 'Instance A (Red)',  url: 'http://localhost:3001' },
-  { label: 'Instance B (Blue)', url: 'http://localhost:3002' },
-];
-
-function switchServer(url) {
-  const params = new URLSearchParams(window.location.search);
-  params.set('server', url);
-  window.location.search = params.toString();
-}
-
 export default function App() {
   const { isConnected, serverInfo, pixels, stormActive, instances, placePixel, startStorm, stopStorm, backendUrl } =
     useSocket();
@@ -31,20 +20,6 @@ export default function App() {
 
       <div style={styles.toolbar}>
         <ServerInfo serverInfo={serverInfo} isConnected={isConnected} />
-        <div style={styles.serverPicker}>
-          {SERVERS.map(({ label, url }) => (
-            <button
-              key={url}
-              onClick={() => switchServer(url)}
-              style={{
-                ...styles.serverBtn,
-                ...(backendUrl === url ? styles.serverBtnActive : {}),
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
         <div style={{ flex: 1 }} />
         <div style={styles.hint}>캔버스를 클릭하여 꽃을 피워보세요</div>
       </div>
