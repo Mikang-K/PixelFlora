@@ -56,9 +56,10 @@ const styles = {
   app: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh',
+    height: '100vh',
     padding: 16,
     gap: 12,
+    overflow: 'hidden',
   },
   header: {
     textAlign: 'center',
@@ -107,10 +108,16 @@ const styles = {
   main: {
     display: 'flex',
     gap: 16,
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
+    flex: 1,
+    minHeight: 0,
+    overflow: 'hidden',
   },
   canvasWrapper: {
-    flex: 'none',
+    flex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    minWidth: 0,
   },
   sidebar: {
     display: 'flex',
