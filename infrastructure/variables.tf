@@ -43,5 +43,5 @@ variable "desired_capacity" {
 variable "cpu_target" {
   description = "Target CPU utilization (%) for Target Tracking scaling policy"
   type        = number
-  default     = 60
+  default     = 40
 }
