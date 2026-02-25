@@ -4,11 +4,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "key_name" {
-  description = "EC2 Key Pair name for SSH access (create this in the AWS Console first)"
-  type        = string
-}
-
 variable "project_name" {
   description = "Project name prefix for resource naming"
   type        = string

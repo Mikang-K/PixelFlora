@@ -12,3 +12,8 @@ output "asg_name" {
   description = "Auto Scaling Group name"
   value       = module.compute.asg_name
 }
+
+output "ssh_command" {
+  description = "SSH command to connect to an EC2 instance"
+  value       = "ssh -i ${module.compute.private_key_path} ec2-user@<instance-public-ip>"
+}

@@ -6,7 +6,6 @@ variable "ami_id" {
   default = ""
 }
 variable "instance_type"     { type = string }
-variable "key_name"          { type = string }
 variable "min_size"          { type = number }
 variable "max_size"          { type = number }
 variable "desired_capacity"  { type = number }

@@ -5,6 +5,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.0"
+    }
   }
   # Uncomment to use S3 backend for team collaboration:
   # backend "s3" {
@@ -38,7 +46,6 @@ module "compute" {
   public_subnet_ids = module.networking.public_subnet_ids
   ami_id            = var.ami_id
   instance_type     = var.instance_type
-  key_name          = var.key_name
   min_size          = var.min_size
   max_size          = var.max_size
   desired_capacity  = var.desired_capacity

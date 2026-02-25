@@ -10,6 +10,26 @@ locals {
   resolved_ami_id = var.ami_id != "" ? var.ami_id : data.aws_ssm_parameter.al2023.value
 }
 
+# --- Key Pair ---
+# Terraform generates an RSA key pair and uploads the public key to AWS.
+# The private key (.pem) is saved locally for SSH access.
+
+resource "tls_private_key" "main" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "main" {
+  key_name   = "${var.project_name}-key"
+  public_key = tls_private_key.main.public_key_openssh
+}
+
+resource "local_sensitive_file" "private_key" {
+  content         = tls_private_key.main.private_key_pem
+  filename        = "${path.module}/../../../${var.project_name}-key.pem"
+  file_permission = "0400"
+}
+
 # --- Security Groups ---
 
 resource "aws_security_group" "alb" {
@@ -119,7 +139,7 @@ resource "aws_launch_template" "main" {
   name_prefix   = "${var.project_name}-"
   image_id      = local.resolved_ami_id
   instance_type = var.instance_type
-  key_name      = var.key_name
+  key_name      = aws_key_pair.main.key_name
 
   user_data = base64encode(templatefile("${path.module}/../../user_data/startup.sh", {
     redis_host = var.redis_host
