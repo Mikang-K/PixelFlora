@@ -15,9 +15,8 @@ router.get('/pixels', async (req, res) => {
 });
 
 router.post('/storm/start', (req, res) => {
-  const { durationMs = 30000 } = req.body;
-  const started = startStorm(durationMs);
-  res.json({ status: started ? 'started' : 'already_active', durationMs });
+  const started = startStorm();
+  res.json({ status: started ? 'started' : 'already_active' });
 });
 
 router.post('/storm/stop', (req, res) => {

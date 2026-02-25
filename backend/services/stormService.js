@@ -7,15 +7,15 @@ const STRESS_SCRIPT = path.join(__dirname, '../scripts/stressCpu.js');
 let activeWorkers = [];
 let stormActive = false;
 
-function startStorm(durationMs = 30000) {
+function startStorm() {
   if (stormActive) return false;
   stormActive = true;
 
   const cpuCount = os.cpus().length;
-  console.log(`[Storm] Starting CPU stress on ${cpuCount} cores for ${durationMs}ms`);
+  console.log(`[Storm] Starting CPU stress on ${cpuCount} cores`);
 
   for (let i = 0; i < cpuCount; i++) {
-    const worker = new Worker(STRESS_SCRIPT, { workerData: { durationMs } });
+    const worker = new Worker(STRESS_SCRIPT);
     worker.on('exit', () => {
       activeWorkers = activeWorkers.filter((w) => w !== worker);
       if (activeWorkers.length === 0) {

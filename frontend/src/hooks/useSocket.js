@@ -77,8 +77,8 @@ export function useSocket() {
     socketRef.current?.emit('pixel:place', { x, y });
   }
 
-  function startStorm(durationMs = 30000) {
-    socketRef.current?.emit('storm:start', { durationMs });
+  function startStorm() {
+    socketRef.current?.emit('storm:start');
   }
 
   function stopStorm() {

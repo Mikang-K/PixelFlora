@@ -35,8 +35,8 @@ module.exports = function registerSocketHandlers(io) {
       // Redis PUBLISH triggers redisSubscriber → io.emit('pixel:update')
     });
 
-    socket.on('storm:start', ({ durationMs } = {}) => {
-      startStorm(durationMs || 30000);
+    socket.on('storm:start', () => {
+      startStorm();
       io.emit('storm:status', { active: true, instanceId });
     });
 
