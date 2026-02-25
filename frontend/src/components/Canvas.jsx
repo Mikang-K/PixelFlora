@@ -2,8 +2,8 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { drawFlower } from '../utils/pixelFlower';
 
 const PIXEL_SIZE = parseInt(import.meta.env.VITE_PIXEL_SIZE || '8');
-const CANVAS_W = parseInt(import.meta.env.VITE_CANVAS_WIDTH || '2000');
-const CANVAS_H = parseInt(import.meta.env.VITE_CANVAS_HEIGHT || '2000');
+const CANVAS_W = parseInt(import.meta.env.VITE_CANVAS_WIDTH || '1500');
+const CANVAS_H = parseInt(import.meta.env.VITE_CANVAS_HEIGHT || '1500');
 
 export default function Canvas({ pixels, onPixelClick }) {
   const canvasRef = useRef(null);
@@ -29,10 +29,10 @@ export default function Canvas({ pixels, onPixelClick }) {
   }, [pixels]);
 
   const handleMouseDown = useCallback((e) => {
+    didDragRef.current = false;
     if (e.altKey) {
       e.preventDefault();
       isPanningRef.current = true;
-      didDragRef.current = false;
       setIsPanning(true);
       startRef.current = {
         x: e.clientX - panRef.current.x,
