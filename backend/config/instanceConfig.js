@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { redisClient } = require('./redis');
 
 const INSTANCE_COLOR_MAP = {
   A: { primary: '#FF4444', secondary: '#FF69B4', theme: 'red' },
@@ -7,12 +8,41 @@ const INSTANCE_COLOR_MAP = {
   D: { primary: '#FFD700', secondary: '#FFA500', theme: 'yellow' },
 };
 
-// Map instance ID hash to a color key
+// Map instance ID hash to a color key (fallback when all colors are taken)
 function hashToColorKey(instanceId) {
   const chars = 'ABCD';
   let sum = 0;
   for (const c of instanceId) sum += c.charCodeAt(0);
   return chars[sum % chars.length];
+}
+
+// Pick a color key not already used by any active instance in Redis
+async function pickAvailableColorKey(instanceId) {
+  const allKeys = Object.keys(INSTANCE_COLOR_MAP);
+  try {
+    const raw = await redisClient.hgetall('instances');
+    if (!raw) return allKeys[0];
+
+    const usedKeys = new Set();
+    for (const [id, value] of Object.entries(raw)) {
+      if (id === instanceId) continue; // skip self in case of re-registration
+      const data = JSON.parse(value);
+      if (!data.active) continue;
+      for (const [key, colorConfig] of Object.entries(INSTANCE_COLOR_MAP)) {
+        if (data.color && data.color.primary === colorConfig.primary) {
+          usedKeys.add(key);
+          break;
+        }
+      }
+    }
+
+    const available = allKeys.filter((k) => !usedKeys.has(k));
+    if (available.length > 0) return available[0];
+  } catch (err) {
+    console.warn('[Instance] Redis unavailable for color selection, falling back to hash:', err.message);
+  }
+  // All colors taken or Redis error: fall back to hash
+  return hashToColorKey(instanceId);
 }
 
 async function fetchEC2InstanceId() {
@@ -53,15 +83,14 @@ async function initInstanceConfig() {
   try {
     const id = await fetchEC2InstanceId();
     instanceId = id;
-    const colorKey = hashToColorKey(id);
-    instanceColor = INSTANCE_COLOR_MAP[colorKey];
-    console.log(`[Instance] AWS mode - ID: ${instanceId}, theme: ${instanceColor.theme}`);
   } catch {
-    // Fallback to A if metadata not available
     instanceId = `fallback-${Date.now()}`;
-    instanceColor = INSTANCE_COLOR_MAP['A'];
-    console.warn('[Instance] Metadata unavailable, using fallback color: red');
+    console.warn('[Instance] EC2 metadata unavailable, using fallback instance ID');
   }
+
+  const colorKey = await pickAvailableColorKey(instanceId);
+  instanceColor = INSTANCE_COLOR_MAP[colorKey];
+  console.log(`[Instance] AWS mode - ID: ${instanceId}, theme: ${instanceColor.theme}`);
 }
 
 function getInstanceId() { return instanceId; }
