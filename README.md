@@ -20,8 +20,7 @@
 - **클릭 이벤트:** 캔버스 클릭 시 해당 좌표에 픽셀 형태의 꽃 생성.
 - **색상 혼합:** 이미 피어있는 다른 색상의 꽃을 클릭할 경우, 두 색상이 섞인 중간 색 픽셀 생성.
     
-    ![🌸 Pixel Flora - Chrome 2026-02-26 09-18-26.gif](attachment:7cf0956e-c241-46fe-abe9-b4b65c4c92a6:_Pixel_Flora_-_Chrome_2026-02-26_09-18-26.gif)
-    
+    ![Image](https://github.com/user-attachments/assets/4bc36beb-af44-49c7-af07-16b2c7e31e22)
 
 ### **📈 오토스케일링 시각화**
 
@@ -29,8 +28,13 @@
 - **동적 확장:** CPU 임계치 초과 시 ASG가 새 인스턴스를 실행. 잠시 후 캔버스에 **새로운 색상의 꽃**이 등장하며 시스템 안정화 시각화.
 - **서버 종료 (Scale-in):** 부하 감소로 서버가 종료되면 해당 색상의 꽃들이 회색(Grayscale)으로 변함.
 
-![image.png](attachment:d4868884-575b-4a5b-b09d-a8bfd4b92231:image.png)
+<img width="1889" height="897" alt="Image" src="https://github.com/user-attachments/assets/b9489fdf-d900-4095-b0df-34d901f4e72c" />
 
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/d1a345cc-020d-4fbb-a556-76c84fa4b667" width="33%"/>
+    <img src="https://github.com/user-attachments/assets/7e115fd6-dc0f-49bc-8c29-9b2833a54ce8" width="33%"/>
+    <img src="https://github.com/user-attachments/assets/0614f9a6-bd84-45db-be24-cf694a22983d" width="33%"/>
+</p>
 ---
 
 ## **3. 기술 스택 (Tech Stack)**
@@ -47,10 +51,10 @@
 ---
 
 ## **4. 아키텍처 및 데이터 흐름**
-
-![mermaid-diagram-_SYYYXgqYRC8KlJpiSEO3-low (1).png](attachment:ddf10ce1-cf56-43ac-bcb7-2304b15fbfc7:mermaid-diagram-_SYYYXgqYRC8KlJpiSEO3-low_(1).png)
-
-![mermaid-diagram-_SYYYXgqYRC8KlJpiSEO3-low.png](attachment:0508918b-2f00-4fae-a8aa-d326fbe13816:mermaid-diagram-_SYYYXgqYRC8KlJpiSEO3-low.png)
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/9d6141bd-8aea-4218-b8af-2f34fb6ef13" width="50%"/>
+    <img src="https://github.com/user-attachments/assets/07b6df93-50ec-4154-aed5-393a168a1714" witdh="50%"/>
+</p>
 
 1. **사용자 접속:** ALB DNS로 접속 시, ALB가 현재 활성화된 EC2 중 하나로 연결.
 2. **서버 식별:** 각 EC2는 시작 시 자신의 `Instance ID`를 기반으로 고유 색상(Red, Blue 등)을 결
@@ -522,4 +526,5 @@ Auto Scaling 정책 (Terraform):
                 }
               }
             }
+
         ```
