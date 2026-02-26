@@ -52,7 +52,7 @@
 
 ## **4. 아키텍처 및 데이터 흐름**  
 
-<img width="890" height="831" alt="Image" src="https://github.com/user-attachments/assets/9d6141bd-8aea-4218-b8af-2f34fb6ef13b" />
+<img width="1200" height="595" alt="Image" src="https://github.com/user-attachments/assets/831f3e63-786b-4ce0-bcf2-bd4ac52a4127" />
 
 1. **사용자 접속:** ALB DNS로 접속 시, ALB가 현재 활성화된 EC2 중 하나로 연결.
 2. **서버 식별:** 각 EC2는 시작 시 자신의 `Instance ID`를 기반으로 고유 색상(Red, Blue 등)을 결
@@ -254,5 +254,6 @@ Graceful Shutdown (인스턴스 종료 시각화 핵심):
 Auto Scaling 정책 (Terraform):
 □ TargetTrackingScaling: CPU 40% 초과 시 스케일 아웃
 □ CloudWatch 대시보드 설정`
+
 
 
