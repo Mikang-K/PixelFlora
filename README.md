@@ -33,7 +33,7 @@
 <p align="center">
     <img src="https://github.com/user-attachments/assets/d1a345cc-020d-4fbb-a556-76c84fa4b667" width="33%"/>
     <img src="https://github.com/user-attachments/assets/7e115fd6-dc0f-49bc-8c29-9b2833a54ce8" width="33%"/>
-    <img src="https://github.com/user-attachments/assets/0614f9a6-bd84-45db-be24-cf694a22983d" width="33%"/>
+    <img src="https://github.com/user-attachments/assets/94d78ffb-caa7-4582-8eb9-cf891a9b301a" width="33%"/>
 </p>
 ---
 
@@ -50,11 +50,9 @@
 
 ---
 
-## **4. 아키텍처 및 데이터 흐름**
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/9d6141bd-8aea-4218-b8af-2f34fb6ef13" width="50%"/>
-    <img src="https://github.com/user-attachments/assets/07b6df93-50ec-4154-aed5-393a168a1714" witdh="50%"/>
-</p>
+## **4. 아키텍처 및 데이터 흐름**  
+
+<img width="890" height="831" alt="Image" src="https://github.com/user-attachments/assets/9d6141bd-8aea-4218-b8af-2f34fb6ef13b" />
 
 1. **사용자 접속:** ALB DNS로 접속 시, ALB가 현재 활성화된 EC2 중 하나로 연결.
 2. **서버 식별:** 각 EC2는 시작 시 자신의 `Instance ID`를 기반으로 고유 색상(Red, Blue 등)을 결
@@ -528,3 +526,4 @@ Auto Scaling 정책 (Terraform):
             }
 
         ```
+
