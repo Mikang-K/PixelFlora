@@ -21,7 +21,9 @@ export function useSocket() {
   const [instances, setInstances] = useState({});
 
   useEffect(() => {
-    const socket = io(backendUrl, { transports: ['websocket', 'polling'] });
+    // WebSocket-only: skips HTTP polling handshake so nginx can round-robin
+    // each new connection independently (polling causes session-ID mismatch across backends)
+    const socket = io(backendUrl, { transports: ['websocket'] });
     socketRef.current = socket;
 
     socket.on('connect', () => setIsConnected(true));
